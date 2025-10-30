@@ -1,0 +1,97 @@
+/* Worker Dashboard Styles */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 280px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2rem 1.5rem;
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    color: #4a90e2;
+}
+
+.menu a {
+    display: block;
+    padding: 0.9rem 1rem;
+    text-decoration: none;
+    color: #2c3e50;
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.menu a i { margin-right: 10px; }
+
+.menu a:hover { background: #eef2ff; color: #4a60e2; }
+.menu a.active { background: #e2e8ff; color: #4a60e2; font-weight: 600; }
+
+.main-content {
+    flex: 1;
+    padding: 2.5rem;
+}
+
+.main-content h1 { font-size: 28px; margin-bottom: 0.75rem; color: #1f2937; }
+.main-content p { color: #4b5563; margin-bottom: 1.5rem; }
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.card .icon {
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #4a90e2, #6e8efb);
+    color: white; font-size: 18px; margin-bottom: 10px;
+}
+
+.card h3 { margin: 6px 0 6px; color: #111827; }
+.card p { color: #6b7280; margin-bottom: 10px; }
+
+.btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(74, 144, 226, 0.25); }
+
+@media (max-width: 768px) {
+    .container { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: static; }
+}
+
+

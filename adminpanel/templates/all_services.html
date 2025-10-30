@@ -1,0 +1,313 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Services - Smart City Dashboard</title>
+  <link rel="stylesheet" href={% static "CSS/dashboard.css" %} />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    .services-container {
+      padding: 20px;
+    }
+    .services-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .services-header h1 {
+      color: #2c3e50;
+      margin: 0;
+    }
+    .back-btn {
+      background: #3498db;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .back-btn:hover {
+      background: #2980b9;
+    }
+    .services-table {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .table-header {
+      background: #34495e;
+      color: white;
+      padding: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .table th {
+      background: #ecf0f1;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      color: #2c3e50;
+      border-bottom: 2px solid #bdc3c7;
+    }
+    .table td {
+      padding: 15px;
+      border-bottom: 1px solid #ecf0f1;
+      vertical-align: top;
+    }
+    .table tr:hover {
+      background: #f8f9fa;
+    }
+    .status-badge {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .status-new {
+      background: #f39c12;
+      color: white;
+    }
+    .status-active {
+      background: #3498db;
+      color: white;
+    }
+    .status-resolved {
+      background: #27ae60;
+      color: white;
+    }
+    .citizen-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .citizen-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .citizen-details h4 {
+      margin: 0;
+      color: #2c3e50;
+      font-size: 14px;
+    }
+    .citizen-details p {
+      margin: 2px 0 0 0;
+      color: #7f8c8d;
+      font-size: 12px;
+    }
+    .complaint-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .complaint-details {
+      max-width: 300px;
+    }
+    .complaint-type {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+    .complaint-description {
+      color: #7f8c8d;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .location {
+      color: #95a5a6;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    .worker-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .worker-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .worker-name {
+      font-weight: 500;
+      color: #2c3e50;
+      font-size: 13px;
+    }
+    .datetime {
+      color: #95a5a6;
+      font-size: 12px;
+    }
+    .no-services {
+      text-align: center;
+      padding: 50px;
+      color: #7f8c8d;
+    }
+    .no-services i {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #bdc3c7;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar collapsed" id="sidebar">
+      <h2>SMART CITY SERVICES</h2>
+      <nav>
+        <a href="{% url 'dashboard' %}"><i class="fas fa-chart-line"></i> Dashboard</a>
+        <a href="{% url 'all_users' %}"><i class="fas fa-user"></i> Users</a>
+        <a href="{% url 'all_workers' %}"><i class="fas fa-hard-hat"></i> Workers</a>
+        <a href="{% url 'new_complaints' %}"><i class="fas fa-list"></i> New Complaints
+          <span style="margin-left:8px; padding:2px 8px; border-radius:999px; background:#ef4444; color:#fff; font-size:12px; display:inline-block; vertical-align:middle;">+{{ new_complaints_count }}</span>
+        </a>
+        <a href="{% url 'all_services' %}" class="active"><i class="fas fa-lock"></i> Services</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard">
+      <header>
+        <div class="menu-toggle" id="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+        <h1>All Services</h1>
+        <span class="admin-label">Admin</span>
+      </header>
+
+      <div class="services-container">
+        <div class="services-header">
+          <h1><i class="fas fa-lock"></i> All Services</h1>
+          <a href="{% url 'dashboard' %}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+          </a>
+        </div>
+
+        {% if services_data %}
+        <div class="services-table">
+          <div class="table-header">
+            <i class="fas fa-list"></i> Services Overview
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Citizen</th>
+                <th>Service Details</th>
+                <th>Image</th>
+                <th>Status</th>
+                <th>Assigned Worker</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for service in services_data %}
+              <tr>
+                <td>
+                  <div class="citizen-info">
+                    {% if service.complaint.user.image %}
+                      <img src="{{ service.complaint.user.image.url }}" alt="Citizen" class="citizen-avatar">
+                    {% else %}
+                      <div class="citizen-avatar" style="background: #bdc3c7; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-user" style="color: white;"></i>
+                      </div>
+                    {% endif %}
+                    <div class="citizen-details">
+                      <h4>{{ service.complaint.user.name|default:"Anonymous" }}</h4>
+                      <p>{{ service.complaint.user.email|default:"No email" }}</p>
+                      <p>{{ service.complaint.user.mobileno|default:"No phone" }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="complaint-details">
+                    <div class="complaint-type">{{ service.complaint.comType }}</div>
+                    <div class="complaint-description">{{ service.complaint.description }}</div>
+                    <div class="location"><i class="fas fa-map-marker-alt"></i> {{ service.complaint.location }}</div>
+                  </div>
+                </td>
+                <td>
+                  {% if service.complaint.image %}
+                    <img src="{{ service.complaint.image.url }}" alt="Complaint Image" class="complaint-image" onclick="window.open(this.src, '_blank')">
+                  {% else %}
+                    <div class="complaint-image" style="background: #ecf0f1; display: flex; align-items: center; justify-content: center;">
+                      <i class="fas fa-image" style="color: #bdc3c7;"></i>
+                    </div>
+                  {% endif %}
+                </td>
+                <td>
+                  <span class="status-badge status-{{ service.complaint.status|lower }}">
+                    {{ service.complaint.get_status_display }}
+                  </span>
+                </td>
+                <td>
+                  {% if service.assigned_worker %}
+                    <div class="worker-info">
+                      {% if service.assigned_worker.image %}
+                        <img src="{{ service.assigned_worker.image.url }}" alt="Worker" class="worker-avatar">
+                      {% else %}
+                        <div class="worker-avatar" style="background: #3498db; display: flex; align-items: center; justify-content: center;">
+                          <i class="fas fa-hard-hat" style="color: white; font-size: 12px;"></i>
+                        </div>
+                      {% endif %}
+                      <div>
+                        <div class="worker-name">{{ service.assigned_worker.name }}</div>
+                        <div style="color: #7f8c8d; font-size: 11px;">{{ service.assigned_worker.department }}</div>
+                      </div>
+                    </div>
+                  {% else %}
+                    <span style="color: #95a5a6; font-style: italic;">Not assigned</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <div class="datetime">
+                    {{ service.complaint.datetime|date:"M d, Y" }}<br>
+                    {{ service.complaint.datetime|time:"H:i" }}
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="no-services">
+          <i class="fas fa-inbox"></i>
+          <h3>No Services Found</h3>
+          <p>There are no services/complaints in the system yet.</p>
+        </div>
+        {% endif %}
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggleBtn = document.getElementById("menu-toggle");
+      const sidebar = document.getElementById("sidebar");
+
+      toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("collapsed");
+
+        toggleBtn.innerHTML = sidebar.classList.contains('collapsed')
+          ? '<i class="fas fa-bars"></i>'
+          : '<i class="fas fa-times"></i>';
+      });
+    });
+  </script>
+</body>
+</html>

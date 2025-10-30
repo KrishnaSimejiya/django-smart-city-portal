@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Update Complaint Status</title>
+    <link rel="stylesheet" href="{% static 'CSS/wdashboard.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"/>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2 class="logo">Smart City<br>Portal</h2>
+            <nav class="menu">
+                <a href="{% url 'wdashboard' %}"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+                <a href="{% url 'wprofile' %}"><i class="fa-solid fa-user"></i> Profile</a>
+                <a href="{% url 'new_work' %}" class="active"><i class="fa-solid fa-briefcase"></i> New Work</a>
+                <a href="{% url 'request_list' %}"><i class="fa-solid fa-list"></i> Complaints</a>
+                <a href="{% url 'reset_password' user.id %}"><i class="fa-solid fa-key"></i> Reset Password</a>
+                <a href="{% url 'wlogin' %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <h1>Update Status: Complaint #{{ comp.id }}</h1>
+            <p><strong>Type:</strong> {{ comp.comType }} | <strong>Location:</strong> {{ comp.location }} | <strong>Priority:</strong> {{ comp.priority }}</p>
+
+            <form method="post" style="margin-top: 16px;">
+                {% csrf_token %}
+                <label for="status">Set Status</label>
+                <select name="status" id="status" required style="display:block; padding:8px; margin-top:6px;">
+                    {% for val, label in status_choices %}
+                        <option value="{{ val }}" {% if comp.status == val %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn" style="margin-top:10px; background:#16a34a; color:#fff; padding:8px 12px; border:none; border-radius:6px;">Save</button>
+                <a href="{% url 'new_work' %}" class="btn" style="margin-top:10px; background:#6b7280; color:#fff; padding:8px 12px; border:none; border-radius:6px; text-decoration:none;">Cancel</a>
+            </form>
+        </main>
+    </div>
+</body>
+</html>
+
+

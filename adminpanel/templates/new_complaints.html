@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Complaints</title>
+  <link rel="stylesheet" href="{% static 'CSS/dashboard.css' %}" />
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar collapsed" id="sidebar">
+      <h2>SMART CITY SERVICES</h2>
+      <nav>
+        <a href="{% url 'dashboard' %}"><i class="fas fa-chart-line"></i> Dashboard</a>
+        <a href="{% url 'all_users' %}"><i class="fas fa-user"></i> Users</a>
+        <a href="{% url 'all_workers' %}"><i class="fas fa-hard-hat"></i> Workers</a>
+        <a href="{% url 'new_complaints' %}" class="active"><i class="fas fa-list"></i> New Complaints
+          <span style="margin-left:8px; padding:2px 8px; border-radius:999px; background:#ef4444; color:#fff; font-size:12px; display:inline-block; vertical-align:middle;">+{{ new_complaints_count }}</span>
+        </a>
+        <a href="{% url 'all_services' %}"><i class="fas fa-lock"></i> Services</a>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="dashboard">
+      <header>
+        <div class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></div>
+        <h1>New Complaints (+{{ new_complaints_count }})</h1>
+        <span class="admin-label">Admin</span>
+      </header>
+      <section class="charts">
+        <div class="chart">
+          <h3>Incoming Complaints</h3>
+          {% if complaints %}
+          <table style="width:100%; border-collapse: collapse;">
+            <thead>
+              <tr>
+                <th style="text-align:left; padding:8px;">ID</th>
+                <th style="text-align:left; padding:8px;">User</th>
+                <th style="text-align:left; padding:8px;">Type</th>
+                <th style="text-align:left; padding:8px;">Location</th>
+                <th style="text-align:left; padding:8px;">Priority</th>
+                <th style="text-align:left; padding:8px;">Date</th>
+                <th style="text-align:left; padding:8px;">Status</th>
+                <th style="text-align:left; padding:8px;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for c in complaints %}
+              <tr>
+                <td style="padding:8px;">{{ c.id }}</td>
+                <td style="padding:8px;">{{ c.user.name|default:'-' }}</td>
+                <td style="padding:8px;">{{ c.comType }}</td>
+                <td style="padding:8px;">{{ c.location }}</td>
+                <td style="padding:8px;">{{ c.priority }}</td>
+                <td style="padding:8px;">{{ c.datetime }}</td>
+                <td style="padding:8px;">{{ c.get_status_display }}</td>
+                <td style="padding:8px;">
+                  {% if c.status != 'RESOLVED' %}
+                  <a href="{% url 'assign_work' c.id %}" style="padding:6px 10px; background:#2563eb; color:#fff; border-radius:6px; text-decoration:none;">Assign Work</a>
+                  {% else %}
+                  -
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+            <p>No complaints yet.</p>
+          {% endif %}
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggleBtn = document.getElementById("menu-toggle");
+      const sidebar = document.getElementById("sidebar");
+      toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("collapsed");
+        toggleBtn.innerHTML = sidebar.classList.contains('collapsed')
+          ? '<i class="fas fa-bars"></i>'
+          : '<i class="fas fa-times"></i>';
+      });
+    });
+  </script>
+</body>
+</html>
+

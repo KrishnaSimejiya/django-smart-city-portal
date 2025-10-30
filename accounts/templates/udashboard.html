@@ -1,0 +1,233 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="{% static 'CSS/udashboard.css' %}?v={% now 'U' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"/>
+  <style>
+    /* Modern Attractive Dashboard Styles */
+    .main-content {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    
+    .welcome-section {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      padding: 2.5rem;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .welcome-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 50%;
+      opacity: 0.1;
+      transform: translate(30px, -30px);
+    }
+    
+    .welcome-section h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .welcome-section p {
+      font-size: 1.1rem;
+      color: #64748b;
+      margin: 0;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e2e8f0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      border-radius: 16px 16px 0 0;
+    }
+    
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .stat-label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Status-specific colors with white backgrounds */
+    .stat-card:nth-child(1)::before { 
+      background: linear-gradient(90deg, #3b82f6, #1d4ed8); 
+    }
+    .stat-card:nth-child(1) .stat-number { 
+      color: #1d4ed8; 
+    }
+    .stat-card:nth-child(1) .stat-label { 
+      color: #1e40af; 
+    }
+    
+    .stat-card:nth-child(2)::before { 
+      background: linear-gradient(90deg, #f59e0b, #d97706); 
+    }
+    .stat-card:nth-child(2) .stat-number { 
+      color: #d97706; 
+    }
+    .stat-card:nth-child(2) .stat-label { 
+      color: #b45309; 
+    }
+    
+    .stat-card:nth-child(3)::before { 
+      background: linear-gradient(90deg, #10b981, #059669); 
+    }
+    .stat-card:nth-child(3) .stat-number { 
+      color: #059669; 
+    }
+    .stat-card:nth-child(3) .stat-label { 
+      color: #047857; 
+    }
+    
+    .stat-card:nth-child(4)::before { 
+      background: linear-gradient(90deg, #8b5cf6, #7c3aed); 
+    }
+    .stat-card:nth-child(4) .stat-number { 
+      color: #7c3aed; 
+    }
+    .stat-card:nth-child(4) .stat-label { 
+      color: #6d28d9; 
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 1rem;
+      }
+      
+      .welcome-section {
+        padding: 1.5rem;
+      }
+      
+      .welcome-section h1 {
+        font-size: 2rem;
+      }
+      
+      .quick-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      
+      .stat-card {
+        padding: 1.5rem;
+      }
+      
+      .stat-number {
+        font-size: 2.2rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .quick-stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .welcome-section h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2 class="logo">Smart City<br>Portal</h2>
+      <nav class="menu">
+        <a href="{% url 'udashboard' %}" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+        <a href="{% url 'profile' %}"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="{% url 'request_list' %}"><i class="fa-solid fa-list"></i> Complaints</a>
+        <a href="{% url 'create_request' %}"><i class="fa-solid fa-plus"></i> New Complaint</a>
+        <a href="{% url 'password_reset_request' %}"><i class="fa-solid fa-key"></i> Reset Password</a>
+        <a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main-content">
+      <div class="welcome-section">
+        <h1>Welcome, {{ user.name }}!</h1>
+        <p>Here's an overview of your account activity and complaint statistics.</p>
+      </div>
+      
+      <!-- Statistics Overview -->
+      <div class="quick-stats">
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.total_complaints|default:"0" }}</div>
+          <div class="stat-label">Total Complaints</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.new_complaints|default:"0" }}</div>
+          <div class="stat-label">New Complaints</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.active_complaints|default:"0" }}</div>
+          <div class="stat-label">Active Complaints</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.resolved_complaints|default:"0" }}</div>
+          <div class="stat-label">Resolved Complaints</div>
+        </div>
+      </div>
+      
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'CSS/wregister.css' %}?v={% now 'U' %}">
+</head>
+<body>
+    <form action="" method="post" enctype="multipart/form-data"> 
+        {% csrf_token %}
+        <label for="">Full Name :</label>
+        <input type="text" name="name" required><br>
+        <label for="">Email :</label>
+        <input type="email" name="email" required><br>
+        <label for="">Mobile No :</label>
+        <input type="number" name="mobileno" required><br>
+        <label for="">Address</label>
+        <input type="text" name="address" required><br>
+        <label for="">Password</label>
+        <input type="password" name="password"><br>
+        <label for="">profile picture</label>
+        <input type="file" name="image"><br>
+        <label for="">Department :</label>
+        <input type="text" name="department" list="departments" required><br>
+        <datalist id="departments">
+            <option value="Doctor"></option>
+            <option value="Municipal"></option>
+            <option value="Bus"></option>
+        </datalist>
+        <label for="">is_availaable</label>
+        <input type="text" name="avaialbility" list="avaialbilities">
+        <datalist id="avaialbilities">
+            <option value="available"></option>
+            <option value="leave"></option>
+            <option value="Not available"></option>
+        </datalist><br>
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+
+        {% if messages %}
+            {% for message in messages %}
+                <script>alert("{{ message }}");</script>
+            {% endfor %}
+        {% endif %}
+    </form>
+</body>
+</html>

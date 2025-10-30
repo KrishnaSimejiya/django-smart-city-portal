@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request List</title>
+    <link rel="stylesheet" href={% static "CSS/request_list.css" %}>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"/>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2 class="logo">Smart City<br>Portal</h2>
+            <nav class="menu">
+                <a href="/udashboard/"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+                <a href="/profile/"><i class="fa-solid fa-user"></i> Profile</a>
+                <a href="{% url 'request_list' %}" class="active"><i class="fa-solid fa-list"></i> Complaints</a>
+                <a href="{% url 'create_request' %}"><i class="fa-solid fa-plus"></i> New Complaint</a>
+                <a href="/logout/"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+            <h2>Pending Complaints</h2>
+    {% if complaints_new %}
+        {% for complaint in complaints_new %}
+            <div class="section">
+                <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="complaint_id" value="{{ complaint.id }}">
+
+                <div class="form-group">
+                    <label>Status:</label>
+                    <input type="text" value="{{ complaint.status }}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label>Type:</label>
+                    <input list="Complaint Types" type="text" name="comType" value="{{ complaint.comType }}">
+                    <datalist id="Complaint Types">
+                        <option value="Infrastructure"></option>
+                        <option value="Utility"></option>
+                        <option value="Sanitation & Waste Management"></option>
+                        <option value="Environment & Public Health"></option>
+                        <option value="Public Transport"></option>
+                        <option value="Muncipal"></option>
+                        <option value="Digital & Connectivity Issues"></option>
+                        <option value="Law & order / Safety"></option>
+                        <option value="Parks & Recreation"></option>
+                        <option value="Other"></option>
+                    </datalist>
+                </div>
+                
+                <div class="form-group">
+                    <label>Location:</label>
+                    <input type="text" name="location" value="{{ complaint.location }}">
+                </div>
+                
+                <div class="form-group">
+                    <label>Description:</label>
+                    <input type="text" name="description" value="{{ complaint.description }}">
+                </div>
+                
+                <div class="form-group">
+                    <label>Priority:</label>
+                    <input list="priorities" type="text" name="priority" value="{{ complaint.priority }}">
+                    <datalist id="priorities">
+                        <option value="High"></option>
+                        <option value="Law"></option>
+                        <option value="Medium"></option>
+                    </datalist>
+                </div>
+
+                <div class="form-group">
+                    <label>Image:</label>
+                    <input type="file" name="image">
+                    <img src="{{ complaint.image.url }}" width="120">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit">Save Changes</button>
+                </div>
+                </form>
+            </div>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>No pending complaints.</p>
+    {% endif %}
+
+    <h2>Active Complaints</h2>
+    {% if complaints_active %}
+        {% for complaint in complaints_active %}
+            <div class="section">
+                <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="complaint_id" value="{{ complaint.id }}">
+
+                <div class="form-group">
+                    <label>Status:</label>
+                    <input type="text" value="{{ complaint.status }}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label>Type:</label>
+                    <input list="Complaint Types" type="text" name="comType" value="{{ complaint.comType }}">
+                    <datalist id="Complaint Types">
+                        <option value="Infrastructure"></option>
+                        <option value="Utility"></option>
+                        <option value="Sanitation & Waste Management"></option>
+                        <option value="Environment & Public Health"></option>
+                        <option value="Public Transport"></option>
+                        <option value="Muncipal"></option>
+                        <option value="Digital & Connectivity Issues"></option>
+                        <option value="Law & order / Safety"></option>
+                        <option value="Parks & Recreation"></option>
+                        <option value="Other"></option>
+                    </datalist>
+                </div>
+                
+                <div class="form-group">
+                    <label>Location:</label>
+                    <input type="text" name="location" value="{{ complaint.location }}">
+                </div>
+                
+                <div class="form-group">
+                    <label>Description:</label>
+                    <input type="text" name="description" value="{{ complaint.description }}">
+                </div>
+                
+                <div class="form-group">
+                    <label>Priority:</label>
+                    <input list="priorities" type="text" name="priority" value="{{ complaint.priority }}">
+                    <datalist id="priorities">
+                        <option value="High"></option>
+                        <option value="Law"></option>
+                        <option value="Medium"></option>
+                    </datalist>
+                </div>
+
+                <div class="form-group">
+                    <label>Image:</label>
+                    <input type="file" name="image">
+                    <img src="{{ complaint.image.url }}" width="120">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit">Save Changes</button>
+                </div>
+                </form>
+            </div>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>No active complaints.</p>
+    {% endif %}
+
+    <h2>Resolved Complaints</h2>
+    {% if complaints_resolved %}
+        {% for complaint in complaints_resolved %}
+            <div class="section">
+                <div class="form-group">
+                    <label>Status:</label>
+                    <input type="text" value="{{ complaint.status }}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label>Type:</label>
+                    <input type="text" value="{{ complaint.comType }}" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label>Location:</label>
+                    <input type="text" value="{{ complaint.location }}" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description:</label>
+                    <input type="text" value="{{ complaint.description }}" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label>Priority:</label>
+                    <input type="text" value="{{ complaint.priority }}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label>Image:</label>
+                    <img src="{{ complaint.image.url }}" width="120">
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>No resolved complaints.</p>
+    {% endif %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <script>alert("{{ message }}");</script>
+        {% endfor %}
+    {% endif %}
+        </main>
+    </div>
+</body>
+</html>

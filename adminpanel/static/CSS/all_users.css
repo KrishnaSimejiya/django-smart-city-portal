@@ -1,0 +1,52 @@
+/* Layout to include dashboard sidebar */
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+.container { display: flex; min-height: 100vh; position: relative; }
+.sidebar {
+    width: 250px;
+    background: rgba(44, 83, 126, 0.95);
+    backdrop-filter: blur(20px);
+    color: white;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    transition: transform 0.4s ease;
+    border-right: 1px solid rgba(255,255,255,0.1);
+}
+.sidebar.collapsed { transform: translateX(-100%); }
+.sidebar h2 { font-size: 18px; margin-bottom: 20px; text-align: center; color: #e8f0ff; }
+.sidebar nav a {
+    display: block; color: rgba(255,255,255,0.9); text-decoration: none; padding: 12px; border-radius: 10px; margin-bottom: 8px; transition: background 0.2s ease;
+}
+.sidebar nav a.active, .sidebar nav a:hover { background: rgba(255,255,255,0.15); }
+
+.main { flex: 1; padding: 24px; margin-left: 250px; transition: margin-left 0.4s ease; width: 100%; }
+.sidebar.collapsed ~ .main { margin-left: 0; }
+
+.menu-toggle { position: sticky; top: 12px; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.25); cursor: pointer; }
+.menu-toggle i { pointer-events: none; }
+.menu-toggle:hover { background: rgba(255,255,255,0.25); }
+.header {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+}
+.add-user-btn {
+    padding: 10px 16px; background: linear-gradient(135deg, #4a90e2, #357abd); color: #fff;
+    border: none; border-radius: 8px; cursor: pointer; font-weight: 600;
+}
+
+table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; }
+th, td { padding: 12px 10px; border-bottom: 1px solid #eef2f7; }
+th { background: #eff6ff; text-align: left; color: #1f2937; }
+tbody tr:hover { background: #fafbff; }
+
+input[type="text"], input[type="email"], input[type="file"] {
+    width: 100%; padding: 8px 10px; border: 1px solid #e5e7eb; border-radius: 8px;
+}
+button { padding: 6px 10px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; }
+button:hover { background: #f3f4f6; }

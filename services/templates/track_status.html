@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Track Complaint Status</title>
+  <link rel="stylesheet" href="{% static 'CSS/dashboard.css' %}" />
+</head>
+<body>
+  <div class="container" style="max-width: 1000px; margin: 20px auto;">
+    <h1>Track Complaint Status</h1>
+    <form method="get" style="margin: 12px 0;">
+      <input type="text" name="q" placeholder="Search by ID, type, location, or status" value="{{ query }}" style="width: 70%; padding: 8px;" />
+      <button type="submit" style="padding:8px 12px;">Search</button>
+    </form>
+
+    {% if complaints %}
+    <table style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">ID</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Type</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Location</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Priority</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Created</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #eee;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in complaints %}
+        <tr>
+          <td style="padding:8px;">{{ c.id }}</td>
+          <td style="padding:8px;">{{ c.comType }}</td>
+          <td style="padding:8px;">{{ c.location }}</td>
+          <td style="padding:8px;">{{ c.priority }}</td>
+          <td style="padding:8px;">{{ c.datetime|date:"M d, Y H:i" }}</td>
+          <td style="padding:8px; font-weight:600;">{{ c.status }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <p>No complaints found.</p>
+    {% endif %}
+  </div>
+</body>
+</html>
+
+

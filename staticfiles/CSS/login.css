@@ -1,0 +1,391 @@
+/* Modern Smart City Login - Complete Redesign */
+
+/* Enhanced Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Root Variables for Consistent Theming */
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --secondary-gradient: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  --accent-gradient: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+  --text-light: #ffffff;
+  --text-dark: #2d3748;
+  --shadow-light: rgba(255, 255, 255, 0.1);
+  --shadow-dark: rgba(0, 0, 0, 0.1);
+  --border-radius: 20px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Body with Animated Background */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--primary-gradient);
+  min-height: 100vh;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated Background Elements */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 219, 226, 0.2) 0%, transparent 50%);
+  animation: backgroundFloat 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes backgroundFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-30px) rotate(1deg); }
+  66% { transform: translateY(15px) rotate(-1deg); }
+}
+
+/* Floating Particles */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.3), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.3), transparent),
+    radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.2), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: particleFloat 15s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes particleFloat {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-100px); }
+}
+
+/* Enhanced form container */
+form {
+  width: 100%;
+  max-width: 450px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: var(--border-radius);
+  padding: 3rem 2.5rem;
+  padding-top: 4rem;
+  margin-top: 2rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+  animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: visible;
+}
+
+/* Decorative top border */
+form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2, #4ecdc4, #44a08d);
+  animation: shimmer 3s ease-in-out infinite;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Login title */
+form::after {
+  content: 'User Login';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary-gradient);
+  color: white;
+  padding: 10px 28px;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  white-space: nowrap;
+}
+
+/* Enhanced labels */
+label {
+  display: block;
+  font-weight: 700;
+  color: #4a5568;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+/* Icon styling for labels */
+label[for=""]:first-of-type::before {
+  content: '📧';
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+label[for=""]:last-of-type::before {
+  content: '🔒';
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+/* Enhanced input fields */
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 15px;
+  font-size: 1.1rem;
+  background: #f8fafc;
+  transition: var(--transition);
+  outline: none;
+  margin-bottom: 1rem;
+  position: relative;
+  animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #667eea;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  transform: translateY(-2px);
+}
+
+input[type="email"]:focus {
+  border-color: #4ecdc4;
+  box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.1);
+}
+
+input[type="password"]:focus {
+  border-color: #fd79a8;
+  box-shadow: 0 0 0 4px rgba(253, 121, 168, 0.1);
+}
+
+/* Enhanced submit button */
+button[type="submit"] {
+  width: 100%;
+  padding: 1.1rem 1.5rem;
+  border-radius: 15px;
+  border: none;
+  background: var(--primary-gradient);
+  color: var(--text-light);
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+  margin-top: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+
+/* Button shimmer effect */
+button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+button[type="submit"]:hover::before {
+  left: 100%;
+}
+
+button[type="submit"]:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 45px rgba(102, 126, 234, 0.5);
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+}
+
+button[type="submit"]:active {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Register link styling */
+.register-text {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: #6b7280;
+  animation: fadeInUp 0.6s ease-out 0.5s both;
+}
+
+.register-text a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+  position: relative;
+}
+
+.register-text a:hover {
+  color: #4ecdc4;
+  text-decoration: none;
+}
+
+.register-text a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background: var(--secondary-gradient);
+  transition: width 0.3s ease;
+}
+
+.register-text a:hover::after {
+  width: 100%;
+}
+
+/* Enhanced animations */
+@keyframes slideInUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(30px) scale(0.95); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
+@keyframes fadeInUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Pulse animation for form */
+form {
+  animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1), pulse 3s ease-in-out infinite 1s;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+}
+
+/* Enhanced responsive design */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+  
+  form {
+    padding: 2rem 1.5rem;
+    padding-top: 3rem;
+    border-radius: 15px;
+    max-width: 400px;
+  }
+  
+  form::after {
+    font-size: 0.9rem;
+    padding: 8px 24px;
+    top: -18px;
+  }
+  
+  input[type="email"],
+  input[type="password"] {
+    padding: 0.9rem 1rem;
+    font-size: 1rem;
+  }
+  
+  button[type="submit"] {
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  form {
+    padding: 1.5rem 1rem;
+    padding-top: 2.5rem;
+    border-radius: 12px;
+  }
+  
+  label {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+  
+  input[type="email"],
+  input[type="password"] {
+    padding: 0.8rem 0.9rem;
+    font-size: 0.95rem;
+  }
+  
+  button[type="submit"] {
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-gradient);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-gradient);
+}

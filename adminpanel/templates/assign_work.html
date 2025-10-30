@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assign Work</title>
+  <link rel="stylesheet" href="{% static 'CSS/dashboard.css' %}" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    .worker-search-container {
+      position: relative;
+      margin: 8px 0;
+    }
+    .worker-search-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .worker-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ddd;
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+    }
+    .worker-option {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+    }
+    .worker-option:hover {
+      background-color: #f5f5f5;
+    }
+    .worker-option.selected {
+      background-color: #e3f2fd;
+    }
+    .worker-info {
+      font-size: 12px;
+      color: #666;
+      margin-top: 2px;
+    }
+    .no-workers {
+      padding: 8px 12px;
+      color: #666;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar" id="sidebar">
+      <h2>SMART CITY SERVICES</h2>
+      <nav>
+        <a href="{% url 'dashboard' %}"><i class="fas fa-chart-line"></i> Dashboard</a>
+        <a href="{% url 'new_complaints' %}" class="active"><i class="fas fa-list"></i> New Complaints</a>
+      </nav>
+    </aside>
+    <main class="dashboard">
+      <header>
+        <h1>Assign Work for Complaint #{{ complaint.id }}</h1>
+      </header>
+      <section class="charts">
+        <div class="chart">
+          <p><strong>Type:</strong> {{ complaint.comType }} | <strong>Location:</strong> {{ complaint.location }} | <strong>Priority:</strong> {{ complaint.priority }}</p>
+          <form method="post">
+            {% csrf_token %}
+            <label for="worker_search">Search and Select Worker</label>
+            <div class="worker-search-container">
+              <input type="text" id="worker_search" class="worker-search-input" placeholder="Type worker name, ID, or department..." autocomplete="off">
+              <input type="hidden" name="worker_id" id="selected_worker_id" required>
+              <div class="worker-dropdown" id="worker_dropdown">
+                {% for w in all_workers %}
+                <div class="worker-option" data-worker-id="{{ w.id }}" data-name="{{ w.name }}" data-department="{{ w.department }}">
+                  <div><strong>{{ w.name }}</strong> (ID: {{ w.id }})</div>
+                  <div class="worker-info">Department: {{ w.department }} | Email: {{ w.email }}</div>
+                </div>
+                {% endfor %}
+                <div class="no-workers" style="display: none;">No workers found matching your search.</div>
+              </div>
+            </div>
+            <div id="selected_worker_display" style="margin: 8px 0; padding: 8px; background: #f0f8ff; border: 1px solid #b3d9ff; border-radius: 4px; display: none;">
+              <strong>Selected Worker:</strong> <span id="selected_worker_name"></span>
+            </div>
+            <label for="notes">Notes (optional)</label>
+            <textarea name="notes" id="notes" rows="3" style="display:block; width:100%; padding:8px;"></textarea>
+            <button type="submit" style="margin-top:10px; padding:8px 12px; background:#16a34a; color:#fff; border:none; border-radius:6px;">Assign</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('worker_search');
+      const dropdown = document.getElementById('worker_dropdown');
+      const selectedWorkerId = document.getElementById('selected_worker_id');
+      const selectedWorkerDisplay = document.getElementById('selected_worker_display');
+      const selectedWorkerName = document.getElementById('selected_worker_name');
+      const workerOptions = document.querySelectorAll('.worker-option');
+      const noWorkersMsg = document.querySelector('.no-workers');
+
+      // Show all workers initially
+      function showAllWorkers() {
+        workerOptions.forEach(option => option.style.display = 'block');
+        noWorkersMsg.style.display = 'none';
+      }
+
+      // Filter workers based on search
+      function filterWorkers(searchTerm) {
+        const term = searchTerm.toLowerCase();
+        let visibleCount = 0;
+
+        workerOptions.forEach(option => {
+          const name = option.dataset.name.toLowerCase();
+          const department = option.dataset.department.toLowerCase();
+          const workerId = option.dataset.workerId;
+          
+          if (name.includes(term) || department.includes(term) || workerId.includes(term)) {
+            option.style.display = 'block';
+            visibleCount++;
+          } else {
+            option.style.display = 'none';
+          }
+        });
+
+        noWorkersMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+
+      // Show dropdown
+      function showDropdown() {
+        dropdown.style.display = 'block';
+        showAllWorkers();
+      }
+
+      // Hide dropdown
+      function hideDropdown() {
+        setTimeout(() => {
+          dropdown.style.display = 'none';
+        }, 200);
+      }
+
+      // Select worker
+      function selectWorker(option) {
+        const workerId = option.dataset.workerId;
+        const workerName = option.dataset.name;
+        const department = option.dataset.department;
+
+        selectedWorkerId.value = workerId;
+        selectedWorkerName.textContent = `${workerName} (${department})`;
+        selectedWorkerDisplay.style.display = 'block';
+        searchInput.value = `${workerName} - ${department}`;
+        
+        // Remove previous selection
+        workerOptions.forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+        
+        hideDropdown();
+      }
+
+      // Event listeners
+      searchInput.addEventListener('focus', showDropdown);
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value;
+        if (searchTerm.length > 0) {
+          filterWorkers(searchTerm);
+        } else {
+          showAllWorkers();
+        }
+        showDropdown();
+      });
+
+      searchInput.addEventListener('blur', hideDropdown);
+
+      workerOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          selectWorker(this);
+        });
+      });
+
+      // Prevent form submission if no worker selected
+      document.querySelector('form').addEventListener('submit', function(e) {
+        if (!selectedWorkerId.value) {
+          e.preventDefault();
+          alert('Please select a worker before assigning work.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
+

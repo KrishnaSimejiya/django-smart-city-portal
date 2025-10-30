@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services</title>
+    <link rel="stylesheet" href="{% static 'CSS/create_requst.css' %}" />
+</head>
+<body>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="">Location :</label>
+    <input type="text" name="location" id="location" placeholder="at which area problem occur"required><br> 
+    <label for="">Complaint Type</label>
+    <input type="text" name="comType" id="comType" placeholder="Choose your Complaint Type" list="Complaint Types" required>
+    <datalist id="Complaint Types">
+        <option value="Infrastructure"></option>
+        <option value="Utility"></option>
+        <option value="Sanitation & Waste Management"></option>
+        <option value="Environment & Public Health"></option>
+        <option value="Public Transport"></option>
+        <option value="Muncipal"></option>
+        <option value="Digital & Connectivity Issues"></option>
+        <option value="Law & order / Safety"></option>
+        <option value="Parks & Recreation"></option>
+        <option value="Other"></option>
+    </datalist><br>
+    <label for="">Complaint Description</label>
+    <input type="text" name="description" id="description" placeholder="Describe your Complaint in Detail" required><br>
+    <label for="">Image of Complaint</label>
+    <input type="file" name="image" id="image" required><br>
+    <label for="">Date & Time</label>
+    <input type="datetime-local" name="datetime" id="datetime" required><br>
+    <label for="status">Status</label>
+    <input type="text" name="status" id="status" list="statuses" value="NEW">
+    <datalist id="statuses">
+        <option value="NEW">Pending</option>
+        <option value="ACTIVE">Active</option>
+        <option value="RESOLVED">Resolved</option>
+    </datalist><br>
+    <button type="submit">Submit Complaint</button>
+
+    {% if messages %}
+        {% for message in messages %}
+            <script>alert("{{ message }}");</script>
+        {% endfor %}
+    {% endif %}
+    </form>
+</body>
+</html>

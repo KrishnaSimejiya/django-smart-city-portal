@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="{% static 'CSS/login.css' %}?v=3.0" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"
+  />
+</head>
+
+<body>
+  <form action="" method="post">
+    {% csrf_token %}
+
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" placeholder="Enter your email" required />
+
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" placeholder="Enter your password" required />
+
+    <button type="submit">Login</button>
+
+    <div class="register-text">
+      Don't have an account?
+      <a href="{% url 'register' %}">Register</a>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <script>alert("{{ message }}");</script>
+      {% endfor %}
+    {% endif %}
+  </form>
+</body>
+</html>

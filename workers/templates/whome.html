@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart City Worker Portal</title>
+    <link rel="stylesheet" href="{% static 'CSS/whome.css' %}?v=2.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <div class="logo-icon">
+                <i class="fas fa-city"></i>
+            </div>
+        </div>
+        
+        <!-- Main Title -->
+        <h1 class="main-title">Smart City Worker Portal</h1>
+        
+        <!-- Subtitle -->
+        <p class="subtitle">Welcome to our comprehensive Smart City Services Platform</p>
+        <p class="subtitle">Join us in building a cleaner, smarter, and more beautiful city</p>
+        
+        
+        <!-- Action Buttons -->
+        <div class="button-container">
+            <a href="{% url 'wlogin' %}" class="btn btn-primary">
+                <i class="fas fa-sign-in-alt btn-icon"></i>
+                Login to Portal
+            </a>
+            <a href="{% url 'wregister' %}" class="btn btn-secondary">
+                <i class="fas fa-user-plus btn-icon"></i>
+                Register
+            </a>
+        </div>
+    </div>
+</body>
+</html>

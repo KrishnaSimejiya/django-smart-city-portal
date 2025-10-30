@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart City Portal - Select Role</title>
+    <link rel="stylesheet" href="{% static 'CSS/role.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="landing-hero">
+        <div class="hero-content">
+            <h1 class="main-title">Smart City Services Portal</h1>
+            <p class="subtitle">Seamless services for citizens and workers</p>
+            <div class="hero-cta">
+                <a href="{% url 'home' %}" class="role-btn citizen-btn">
+                    <i class="fa-solid fa-user"></i>
+                    Citizen Portal
+                </a>
+                <a href="{% url 'whome' %}" class="role-btn worker-btn">
+                    <i class="fa-solid fa-hard-hat"></i>
+                    Worker Portal
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="feature">
+            <i class="fa-solid fa-file-pen"></i>
+            <h3>Raise Complaints</h3>
+            <p>Submit issues and track resolution progress in real-time.</p>
+        </div>
+        <div class="feature">
+            <i class="fa-solid fa-bolt"></i>
+            <h3>Faster Resolution</h3>
+            <p>Assigned workers get notified instantly to act on requests.</p>
+        </div>
+        <div class="feature">
+            <i class="fa-solid fa-shield-heart"></i>
+            <h3>Secure Access</h3>
+            <p>Your data is protected and only visible to you.</p>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stat">
+            <div class="stat-number">{{ stats.citizens }}</div>
+            <div class="stat-label">Registered Citizens</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">{{ stats.active_workers }}</div>
+            <div class="stat-label">Active Workers</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">{{ stats.complaints_resolved }}</div>
+            <div class="stat-label">Complaints Resolved</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">{{ stats.active_complaints }}</div>
+            <div class="stat-label">Active Complaints</div>
+        </div>
+    </section>
+
+    <!-- Admin floating login button -->
+    <a href="{% url 'admin_login' %}" class="admin-fab" title="Admin Login" aria-label="Admin Login">
+        <i class="fa-solid fa-shield-halved"></i>
+    </a>
+</body>
+</html>

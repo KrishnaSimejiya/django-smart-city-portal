@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login - Smart City Portal</title>
+  <link rel="stylesheet" href="{% static 'CSS/admin_login.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="admin-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h1>Admin Login</h1>
+        <p>Smart City Portal Administration</p>
+      </div>
+
+      <form action="" method="post" class="login-form">
+        {% csrf_token %}
+        
+        <div class="input-group">
+          <i class="fa-solid fa-user-shield"></i>
+          <input type="text" name="username" placeholder="Admin Username" required />
+        </div>
+
+        <div class="input-group">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" name="password" placeholder="Admin Password" required />
+        </div>
+
+        <div class="remember-forgot">
+          <label class="remember-me">
+            <input type="checkbox" name="remember">
+            <span class="checkmark"></span>
+            Remember me
+          </label>
+          <a href="#" class="forgot-password">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="login-btn">
+          <i class="fa-solid fa-sign-in-alt"></i>
+          Login as Admin
+        </button>
+
+        <div class="back-to-role">
+          <a href="{% url 'role' %}" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Role Selection
+          </a>
+        </div>
+
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              <i class="fa-solid fa-exclamation-triangle"></i>
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      </form>
+
+      <div class="security-notice">
+        <i class="fa-solid fa-shield-check"></i>
+        <p>This is a secure admin area. All activities are logged and monitored.</p>
+      </div>
+    </div>
+
+    <div class="background-decoration">
+      <div class="floating-shape shape-1"></div>
+      <div class="floating-shape shape-2"></div>
+      <div class="floating-shape shape-3"></div>
+    </div>
+  </div>
+</body>
+</html>

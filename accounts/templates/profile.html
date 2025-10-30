@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profile Page</title>
+  <link rel="stylesheet" href="{% static 'CSS/profile.css' %}?v=1.2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Force reload of CSS */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+      min-height: 100vh !important;
+      color: #333 !important;
+    }
+    
+    .container {
+      display: flex !important;
+      min-height: 100vh !important;
+    }
+    
+    .sidebar {
+      width: 280px !important;
+      background: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: blur(10px) !important;
+      padding: 2rem !important;
+      box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1) !important;
+      position: fixed !important;
+      height: 100vh !important;
+      overflow-y: auto !important;
+    }
+    
+    /* Test style to verify CSS is loading */
+    .main-content h1 {
+      color: red !important;
+      font-size: 3rem !important;
+      text-align: center !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2 class="sidebar-title">Smart City Portal</h2>
+
+      <div class="profile-section">
+        <form method="POST" enctype="multipart/form-data" style="text-align:center;" action="">
+          {% csrf_token %}
+          <label for="image-upload">
+            <img 
+              src="{% if user.image %}{{ user.image.url }}{% else %}{% static 'images/default.jpg' %}{% endif %}" 
+              alt="Profile Picture" 
+              class="profile-pic">
+          </label>
+          <input type="file" name="image" id="image-upload" style="display:none;" onchange="this.form.submit()">
+        </form>
+        <p class="profile-email">{{ user.email }}</p>
+      </div>
+
+      <nav class="nav-links">
+        <a href="{% url 'udashboard' %}" class="nav-link">
+          <i class="fas fa-gauge"></i>
+          Dashboard
+        </a>
+        <a href="{% url 'profile' %}" class="nav-link active">
+          <i class="fas fa-user"></i>
+          Profile
+        </a>
+        <a href="{% url 'request_list' %}" class="nav-link">
+          <i class="fas fa-list"></i>
+          Complaints
+        </a>
+        <a href="{% url 'logout' %}" class="nav-link">
+          <i class="fas fa-right-from-bracket"></i>
+          Logout
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1>Welcome, {{ user.name }}</h1>
+
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" value="{{ user.name }}">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
+        </div>
+        <div class="form-group">
+          <label for="mobileno">Phone</label>
+          <input type="text" id="mobileno" name="mobileno" value="{{ user.mobileno }}">
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <textarea id="address" name="address">{{ user.address }}</textarea>
+        </div>
+        <button type="submit" class="btn-primary">Save Changes</button>
+      </form>
+
+      <div class="actions">
+        <div class="action-card">
+          <p>Register your Complaints</p>
+          <a href="{% url 'create_request' %}" class="btn-secondary">Register</a>
+        </div>
+        <div class="action-card">
+          <p>View and Edit Registered Complaints</p>
+          <a href="{% url 'request_list' %}" class="btn-secondary">Complaints</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
